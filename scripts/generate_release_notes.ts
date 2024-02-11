@@ -4,7 +4,8 @@ const version = Deno.args[0];
 const checksum = Deno.args[1];
 const changelog = await generateChangeLog({
   versionTo: version,
-});
+}).catch(() => 'First release! 🎉');
+
 const text = `## Changes
 
 ${changelog}

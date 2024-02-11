@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Dprint.Plugins.Csharpier</RootNamespace>
+    <AssemblyName>dprint-plugin-csharpier</AssemblyName>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <Authors>Casper Lindschouw</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Csharpier.Core" Version="0.27.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

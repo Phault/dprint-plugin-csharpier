@@ -1,0 +1,10 @@
+deno = "1.40.4"
+dotnet = "8.0.101"
+dprint = "0.45.0"
+rust = "1.76.0"
+
+[plugins]
+deno = "source:https://github.com/moonrepo/deno-plugin/releases/download/v0.9.0/deno_plugin.wasm"
+dotnet = "source:https://github.com/Phault/proto-dotnet-plugin/releases/download/v0.1.0/dotnet_plugin.wasm"
+dprint = "source:https://raw.githubusercontent.com/Phault/proto-toml-plugins/main/dprint/plugin.toml"
+rust = "source:https://github.com/moonrepo/rust-plugin/releases/download/v0.8.0/rust_plugin.wasm"

@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags:
+      - "*"
+
+jobs:
+  build:
+    name: test_release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build (Debug)
+        run: dotnet build DprintPluginCsharpier
+
+      - name: Test
+        run: dotnet test
+
+      - name: Test Exe
+        run: cd test && cargo test
+
+      - name: Build (Release)
+        run: |
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime win-x64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime linux-x64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime linux-musl-x64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime linux-arm64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime linux-musl-arm64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime osx-x64
+          dotnet build DprintPluginCsharpier -c Release --self-contained --runtime osx-arm64
+
+      - name: Package
+        run: |
+          RELEASE_DIR=$GITHUB_WORKSPACE/DprintPluginCsharpier/bin/Release/net8.0
+          # cd to each output directory so we only include its files
+          cd $RELEASE_DIR/osx-x64
+          zip -r ../../../../../dprint-plugin-csharpier-x86_64-apple-darwin.zip ./*
+          cd $RELEASE_DIR/osx-arm64
+          zip -r ../../../../../dprint-plugin-csharpier-aarch64-apple-darwin.zip ./*
+          cd $RELEASE_DIR/linux-x64
+          zip -r ../../../../../dprint-plugin-csharpier-x86_64-unknown-linux-gnu.zip ./*
+          cd $RELEASE_DIR/linux-musl-x64
+          zip -r ../../../../../dprint-plugin-csharpier-x86_64-unknown-linux-musl.zip ./*
+          cd $RELEASE_DIR/linux-arm64
+          zip -r ../../../../../dprint-plugin-csharpier-aarch64-unknown-linux-gnu.zip ./*
+          cd $RELEASE_DIR/linux-musl-arm64
+          zip -r ../../../../../dprint-plugin-csharpier-aarch64-unknown-linux-musl.zip ./*
+          cd $RELEASE_DIR/win-x64
+          zip -r ../../../../../dprint-plugin-csharpier-x86_64-pc-windows-msvc.zip ./*
+      - name: Create plugin file
+        run: deno run --allow-read=. --allow-write=. scripts/create_plugin_file.ts
+
+      - name: Get tag version
+        if: startsWith(github.ref, 'refs/tags/')
+        id: get_tag_version
+        run: echo ::set-output name=TAG_VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Get plugin file checksum
+        if: startsWith(github.ref, 'refs/tags/')
+        id: get_plugin_file_checksum
+        run: echo "::set-output name=CHECKSUM::$(shasum -a 256 plugin.json | awk '{print $1}')"
+
+      - name: Create release notes
+        if: startsWith(github.ref, 'refs/tags/')
+        run: deno run -A ./scripts/generate_release_notes.ts ${{ steps.get_tag_version.outputs.TAG_VERSION }} ${{ steps.get_plugin_file_checksum.outputs.CHECKSUM }} > ${{ github.workspace }}-CHANGELOG.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            dprint-plugin-csharpier-x86_64-apple-darwin.zip
+            dprint-plugin-csharpier-aarch64-apple-darwin.zip
+            dprint-plugin-csharpier-x86_64-unknown-linux-gnu.zip
+            dprint-plugin-csharpier-x86_64-unknown-linux-musl.zip
+            dprint-plugin-csharpier-aarch64-unknown-linux-gnu.zip
+            dprint-plugin-csharpier-aarch64-unknown-linux-musl.zip
+            dprint-plugin-csharpier-x86_64-pc-windows-msvc.zip
+            plugin.json
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          draft: false

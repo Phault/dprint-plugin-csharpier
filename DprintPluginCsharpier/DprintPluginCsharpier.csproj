@@ -6,7 +6,7 @@
     <RootNamespace>Dprint.Plugins.Csharpier</RootNamespace>
     <AssemblyName>dprint-plugin-csharpier</AssemblyName>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Casper Lindschouw</Authors>
   </PropertyGroup>
 

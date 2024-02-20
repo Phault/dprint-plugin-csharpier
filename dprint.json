@@ -1,6 +1,6 @@
 {
-  "indentWidth": 2,
   "exec": {
+    "indentWidth": 2,
     "commands": [
       {
         "command": "rustfmt --edition 2021",
@@ -15,6 +15,6 @@
     "https://plugins.dprint.dev/markdown-0.16.3.wasm",
     "https://plugins.dprint.dev/prettier-0.32.1.json@19aa403ef0862ba8c41164e3dc6f84c0b7a66c2b11e42726b23dd25e6302ada9",
     "https://plugins.dprint.dev/exec-0.4.4.json@c207bf9b9a4ee1f0ecb75c594f774924baf62e8e53a2ce9d873816a408cecbf7",
-    "https://plugins.dprint.dev/Phault/csharpier-0.1.1.json@c58a089d611865cb84bbd1a2c4d5985d7e5f02fd64973110a88b22d463d12a6b"
+    "https://plugins.dprint.dev/Phault/csharpier-0.2.0.json@ea6c82022f7fcfbadcebb8c9be5ec4a7e4f81d45379fa6287909e032d8f4d207"
   ]
 }

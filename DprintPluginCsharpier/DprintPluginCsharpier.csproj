@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Csharpier.Core" Version="0.27.2" />
+    <PackageReference Include="Csharpier.Core" Version="0.27.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

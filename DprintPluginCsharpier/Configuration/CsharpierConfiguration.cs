@@ -6,28 +6,36 @@ using Newtonsoft.Json.Linq;
 
 namespace Dprint.Plugins.Csharpier.Configuration;
 
-/**
- * Represents the subset of Csharpier options we support.
- * Oddly the Csharpier library only exposes the very limited CodeFormatterOptions class.
- *
- * TODO: open upstream issue requesting full configurability
- */
 public record CsharpierConfiguration
 {
     public int? PrintWidth { get; init; }
+    public EndOfLine? EndOfLine { get; init; }
+    public IndentStyle? IndentStyle { get; init; }
+    public int? IndentSize { get; init; }
 
     [JsonExtensionData(ReadData = true, WriteData = false)]
     private IDictionary<string, JToken> UnknownOptions { get; init; } =
         new Dictionary<string, JToken>();
 
     [JsonIgnore]
-    public bool IsEmpty => PrintWidth == null && UnknownOptions.Count == 0;
+    public bool IsEmpty =>
+        PrintWidth == null
+        && EndOfLine == null
+        && IndentStyle == null
+        && IndentSize == null
+        && UnknownOptions.Count == 0;
 
     private static readonly CodeFormatterOptions DefaultCodeFormatterOptions = new();
 
     public CodeFormatterOptions ToCodeFormatterOptions()
     {
-        return new CodeFormatterOptions { Width = PrintWidth ?? DefaultCodeFormatterOptions.Width };
+        return new CodeFormatterOptions
+        {
+            Width = PrintWidth ?? DefaultCodeFormatterOptions.Width,
+            EndOfLine = EndOfLine ?? DefaultCodeFormatterOptions.EndOfLine,
+            IndentStyle = IndentStyle ?? DefaultCodeFormatterOptions.IndentStyle,
+            IndentSize = IndentSize ?? DefaultCodeFormatterOptions.IndentSize
+        };
     }
 
     public CsharpierConfiguration Combine(CsharpierConfiguration other)
@@ -35,6 +43,9 @@ public record CsharpierConfiguration
         return new CsharpierConfiguration
         {
             PrintWidth = other.PrintWidth ?? PrintWidth,
+            EndOfLine = other.EndOfLine ?? EndOfLine,
+            IndentStyle = other.IndentStyle ?? IndentStyle,
+            IndentSize = other.IndentSize ?? IndentSize,
             UnknownOptions = UnknownOptions.Concat(other.UnknownOptions).ToDictionary()
         };
     }

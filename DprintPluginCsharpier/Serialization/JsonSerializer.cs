@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace Dprint.Plugins.Csharpier.Serialization;
@@ -29,7 +30,8 @@ public class JsonSerializer
             ContractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy(),
-            }
+            },
+            Converters = [new StringEnumConverter(new CamelCaseNamingStrategy())]
         };
     }
 }

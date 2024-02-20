@@ -22,8 +22,7 @@ Specify a "csharpier" configuration property in _dprint.json_:
 }
 ```
 
-Currently only the printWidth option from the [official Csharpier options](https://csharpier.com/docs/Configuration) is
-supported.
+Refer to the [official Csharpier docs](https://csharpier.com/docs/Configuration) for available options.
 
 ## Credits
 

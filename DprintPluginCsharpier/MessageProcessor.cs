@@ -196,9 +196,9 @@ public class MessageProcessor(StdoutWriter writer)
               "name": "dprint-plugin-csharpier",
               "version": "{{GetAssemblyVersion()}}",
               "configKey": "csharpier",
-              "helpUrl": "https://dprint.dev/plugins/csharpier",
+              "helpUrl": "https://github.com/Phault/dprint-plugin-csharpier",
               "configSchemaUrl": "",
-              "updateUrl": "https://plugins.dprint.dev/dprint/dprint-plugin-csharpier/latest.json"
+              "updateUrl": "https://plugins.dprint.dev/Phault/dprint-plugin-csharpier/latest.json"
             }
             """;
     }

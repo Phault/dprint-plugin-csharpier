@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://plugins.dprint.dev/Phault/dprint-plugin-csharpier/0.0.0/schema.json",
+  "type": "object",
+  "properties": {
+    "printWidth": {
+      "description": "Specify at what point the printer will wrap content. This is not a hard limit. Some lines will be shorter or longer.",
+      "default": 100,
+      "type": "number"
+    },
+    "useTabs": {
+      "description": "Indent lines with tabs instead of spaces.",
+      "type": "boolean",
+      "default": false,
+      "oneOf": [
+        {
+          "const": true,
+          "description": ""
+        },
+        {
+          "const": false,
+          "description": ""
+        }
+      ]
+    },
+    "tabWidth": {
+      "description": "Specify the number of spaces used per indentation level.",
+      "default": 4,
+      "type": "number"
+    },
+    "endOfLine": {
+      "description": "The kind of newline to use.",
+      "type": "string",
+      "default": "auto",
+      "oneOf": [
+        {
+          "const": "auto",
+          "description": "Maintain existing line endings (mixed values within one file are normalised by looking at what's used after the first line)"
+        },
+        {
+          "const": "lf",
+          "description": "Line Feed only (\\n), common on Linux and macOS as well as inside git repos"
+        },
+        {
+          "const": "crlf",
+          "description": "Carriage Return + Line Feed characters (\\r\\n), common on Windows"
+        }
+      ]
+    }
+  }
+}
